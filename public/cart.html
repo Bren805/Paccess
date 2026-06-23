@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Carrito | ACCESS</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/>
+
+<style>
+
+body{
+    background:#131313;
+    color:white;
+    font-family:'Geist',sans-serif;
+}
+
+.glass{
+    background:rgba(26,26,26,0.8);
+    border:1px solid rgba(208,188,255,0.1);
+    backdrop-filter:blur(10px);
+}
+
+</style>
+
+</head>
+
+<body class="pb-32">
+
+<!-- HEADER -->
+
+<header class="fixed top-0 left-0 w-full h-16 bg-black/80 backdrop-blur-xl border-b border-zinc-800 flex items-center justify-between px-5 z-50">
+
+<a href="home.html">
+
+<span class="material-symbols-outlined text-violet-300 text-3xl">
+arrow_back
+</span>
+
+</a>
+
+<h1 class="text-2xl font-black text-violet-300">
+Carrito
+</h1>
+
+<div></div>
+
+</header>
+
+<!-- CONTENIDO -->
+
+<main class="mt-24 px-5">
+
+<div id="carrito-container" class="space-y-5"></div>
+
+<!-- TOTAL -->
+
+<div class="glass rounded-3xl p-6 mt-10">
+
+<div class="flex justify-between items-center">
+
+<h2 class="text-2xl font-bold">
+Total
+</h2>
+
+<span id="total" class="text-3xl font-black text-violet-300">
+$0
+</span>
+
+</div>
+
+<button
+onclick="vaciarCarrito()"
+class="w-full mt-6 bg-red-500 hover:bg-red-600 transition py-4 rounded-2xl font-bold">
+Vaciar Carrito
+</button>
+
+</div>
+
+</main>
+
+<script>
+
+let carrito =
+    JSON.parse(localStorage.getItem("carrito")) || [];
+
+const container =
+    document.getElementById("carrito-container");
+
+const total =
+    document.getElementById("total");
+
+function renderCarrito(){
+
+    container.innerHTML = "";
+
+    let totalFinal = 0;
+
+    carrito.forEach((producto, index) => {
+
+        totalFinal += Number(producto.precio);
+
+        container.innerHTML += `
+
+        <div class="glass rounded-3xl p-5 flex justify-between items-center">
+
+            <div>
+
+                <h2 class="text-xl font-bold">
+                    ${producto.nombre}
+                </h2>
+
+                <p class="text-violet-300 font-bold text-lg mt-1">
+                    $${producto.precio}
+                </p>
+
+            </div>
+
+            <button
+            onclick="eliminarProducto(${index})"
+            class="material-symbols-outlined bg-red-500 hover:bg-red-600 transition p-3 rounded-full">
+            delete
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+    total.innerText = "$" + totalFinal;
+
+}
+
+function eliminarProducto(index){
+
+    carrito.splice(index, 1);
+
+    localStorage.setItem(
+        "carrito",
+        JSON.stringify(carrito)
+    );
+
+    renderCarrito();
+
+}
+
+function vaciarCarrito(){
+
+    localStorage.removeItem("carrito");
+
+    carrito = [];
+
+    renderCarrito();
+
+}
+
+renderCarrito();
+
+</script>
+
+</body>
+</html>

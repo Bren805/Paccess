@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ACCESS ADMIN</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/>
+
+<style>
+
+body{
+    background:#131313;
+    color:white;
+    font-family:'Geist',sans-serif;
+}
+
+.glass{
+    background:rgba(26,26,26,0.8);
+    border:1px solid rgba(208,188,255,0.1);
+    backdrop-filter:blur(10px);
+}
+
+input{
+    outline:none;
+}
+
+</style>
+
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-6">
+
+<div class="glass w-full max-w-xl rounded-3xl p-8">
+
+<h1 class="text-4xl font-black text-violet-300 mb-2">
+ACCESS ADMIN
+</h1>
+
+<p class="text-zinc-400 mb-8">
+Panel para agregar productos a la tienda 
+</p>
+
+<div class="space-y-5">
+
+<input
+id="nombre"
+type="text"
+placeholder="Nombre del producto"
+class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-5 py-4"
+/>
+
+<input
+id="categoria"
+type="text"
+placeholder="Categoría"
+class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-5 py-4"
+/>
+
+<input
+id="precio"
+type="number"
+placeholder="Precio"
+class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-5 py-4"
+/>
+
+<input
+id="imagen"
+type="text"
+placeholder="URL de imagen"
+class="w-full bg-zinc-900 border border-zinc-700 rounded-2xl px-5 py-4"
+/>
+
+<button
+onclick="agregarProducto()"
+class="w-full bg-violet-500 hover:bg-violet-600 transition py-4 rounded-2xl font-bold text-lg"
+>
+Agregar Producto
+</button>
+
+</div>
+
+<div
+id="mensaje"
+class="mt-6 text-center text-green-400 font-bold"
+></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB-joifAiA-sXI4c7j2MDKazz2omKzPD80",
+  authDomain: "access-store-8955f.firebaseapp.com",
+  projectId: "access-store-8955f",
+  storageBucket: "access-store-8955f.firebasestorage.app",
+  messagingSenderId: "999710580545",
+  appId: "1:999710580545:web:31d37babe33098af464bc0"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+window.agregarProducto = async function() {
+
+  const nombre =
+    document.getElementById("nombre").value;
+
+  const categoria =
+    document.getElementById("categoria").value;
+
+  const precio =
+    Number(document.getElementById("precio").value);
+
+  const imagen =
+    document.getElementById("imagen").value;
+
+  if(!nombre || !categoria || !precio || !imagen){
+
+    alert("Completa todos los campos ❌");
+    return;
+
+  }
+
+  try {
+
+    await addDoc(collection(db, "productos"), {
+
+      nombre,
+      categoria,
+      precio,
+      imagen
+
+    });
+
+    document.getElementById("mensaje").innerHTML =
+      "Producto agregado correctamente 🚀";
+
+    document.getElementById("nombre").value = "";
+    document.getElementById("categoria").value = "";
+    document.getElementById("precio").value = "";
+    document.getElementById("imagen").value = "";
+
+  } catch(error){
+
+    console.log(error);
+
+    alert("Error agregando producto ❌");
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>

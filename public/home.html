@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+<title>ACCESS | Home</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/>
+
+<style>
+
+body{
+    background:#131313;
+    color:white;
+    font-family:'Geist',sans-serif;
+}
+
+.glass{
+    background:rgba(26,26,26,0.8);
+    border:1px solid rgba(208,188,255,0.1);
+    backdrop-filter:blur(10px);
+}
+
+</style>
+
+</head>
+
+<body class="overflow-x-hidden pb-24">
+
+<!-- HEADER -->
+
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-5 h-16 bg-black/80 backdrop-blur-xl border-b border-zinc-800">
+
+<div class="flex items-center gap-3">
+
+<span class="material-symbols-outlined text-violet-400">
+menu
+</span>
+
+<h1 class="text-2xl font-black tracking-tighter text-violet-300">
+ACCESS
+</h1>
+
+</div>
+
+<div class="flex items-center gap-5">
+
+<span class="material-symbols-outlined text-zinc-300">
+search
+</span>
+
+<a href="cart.html">
+
+<span class="material-symbols-outlined text-violet-300 text-3xl">
+shopping_cart
+</span>
+
+</a>
+
+</div>
+
+</header>
+
+<!-- HERO -->
+
+<section class="relative h-[500px] flex items-center justify-center text-center overflow-hidden">
+
+<img
+src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop"
+class="absolute inset-0 w-full h-full object-cover opacity-30"
+/>
+
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#131313]"></div>
+
+<div class="relative z-10 px-6">
+
+<h1 class="text-5xl font-black text-violet-300 mb-5 tracking-tighter">
+ACCESS
+</h1>
+
+<p class="text-zinc-300 max-w-md mx-auto text-lg mb-8">
+Tecnología premium, notebooks, gaming y accesorios de última generación.
+</p>
+
+<button class="bg-violet-500 hover:bg-violet-600 transition px-8 py-3 rounded-full font-bold">
+Explorar Productos
+</button>
+
+</div>
+
+</section>
+
+<!-- PRODUCTOS -->
+
+<main class="px-5 mt-10">
+
+<h2 class="text-3xl font-bold mb-8">
+Productos Destacados
+</h2>
+
+<section
+id="productos"
+class="grid grid-cols-1 md:grid-cols-2 gap-5">
+</section>
+
+</main>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB-joifAiA-sXI4c7j2MDKazz2omKzPD80",
+  authDomain: "access-store-8955f.firebaseapp.com",
+  projectId: "access-store-8955f",
+  storageBucket: "access-store-8955f.firebasestorage.app",
+  messagingSenderId: "999710580545",
+  appId: "1:999710580545:web:31d37babe33098af464bc0"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+const contenedor = document.getElementById("productos");
+
+window.agregarCarrito = function(nombre, precio) {
+
+  let carrito =
+    JSON.parse(localStorage.getItem("carrito")) || [];
+
+  carrito.push({
+    nombre,
+    precio
+  });
+
+  localStorage.setItem(
+    "carrito",
+    JSON.stringify(carrito)
+  );
+
+  alert(nombre + " agregado al carrito 🛒");
+
+};
+
+async function cargarProductos() {
+
+  try {
+
+    const querySnapshot = await getDocs(
+      collection(db, "productos")
+    );
+
+    contenedor.innerHTML = "";
+
+    if (querySnapshot.empty) {
+
+      contenedor.innerHTML = `
+
+      <div class="col-span-full text-center text-zinc-400">
+
+        No hay productos cargados 😢
+
+      </div>
+
+      `;
+
+      return;
+
+    }
+
+    querySnapshot.forEach((doc) => {
+
+      const producto = doc.data();
+
+      contenedor.innerHTML += `
+
+      <div class="glass rounded-3xl overflow-hidden">
+
+        <img
+          src="${producto.imagen}"
+          class="w-full h-56 object-cover"
+        />
+
+        <div class="p-5">
+
+          <p class="text-zinc-400 text-sm">
+            ${producto.categoria}
+          </p>
+
+          <h3 class="text-xl font-bold mt-1">
+            ${producto.nombre}
+          </h3>
+
+          <div class="flex justify-between items-center mt-5">
+
+            <span class="text-violet-300 font-bold text-xl">
+              $${producto.precio}
+            </span>
+
+            <button
+              onclick="agregarCarrito('${producto.nombre}', ${producto.precio})"
+              class="material-symbols-outlined bg-violet-500 hover:bg-violet-600 transition p-3 rounded-full"
+            >
+              add_shopping_cart
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      `;
+
+    });
+
+  } catch(error) {
+
+    console.log(error);
+
+    contenedor.innerHTML = `
+
+    <div class="col-span-full text-center text-red-400">
+
+      Error cargando productos ❌
+
+    </div>
+
+    `;
+
+  }
+
+}
+
+cargarProductos();
+
+</script>
+
+</body>
+</html>

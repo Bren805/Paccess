@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro - ACCESS</title>
+
+<style>
+body{
+    background:#131313;
+    color:white;
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.card{
+    background:#1e1e1e;
+    padding:30px;
+    border-radius:15px;
+    width:350px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border:none;
+    border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#8b5cf6;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#7c3aed;
+}
+
+#mensaje{
+    margin-top:15px;
+    text-align:center;
+}
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+    <h2>Crear Cuenta</h2>
+
+    <form id="registerForm">
+
+        <input
+            type="text"
+            id="nombre"
+            placeholder="Nombre"
+            required
+        >
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            required
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Contraseña"
+            required
+        >
+
+        <button type="submit">
+            Registrarse
+        </button>
+
+    </form>
+
+    <p id="mensaje"></p>
+
+</div>
+
+<script>
+
+const form = document.getElementById("registerForm");
+
+form.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombre").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+
+        const response = await fetch("/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nombre,
+                email,
+                password
+            })
+        });
+
+        const data = await response.json();
+
+        document.getElementById("mensaje").innerText =
+            data.message || data.error;
+
+    } catch (error) {
+
+        document.getElementById("mensaje").innerText =
+            "Error al conectar con el servidor";
+
+        console.error(error);
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ACCESS - Iniciar Sesión</title>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css" rel="stylesheet"/>
+
+<style>
+
+body {
+    background-color: #0A0A0A;
+    color: #e5e2e1;
+    font-family: 'Geist', sans-serif;
+    overflow-x: hidden;
+}
+
+.glass-panel {
+    background: rgba(26, 26, 26, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(208, 188, 255, 0.1);
+}
+
+.neon-glow-primary {
+    box-shadow: 0 0 20px rgba(160, 120, 255, 0.3);
+}
+
+.particle-bg {
+    background: radial-gradient(circle at 50% 50%, rgba(73, 0, 129, 0.15) 0%, transparent 70%);
+}
+
+</style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center relative px-5">
+
+<div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+
+<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full particle-bg blur-3xl opacity-50"></div>
+
+<div class="absolute bottom-[-5%] right-[-5%] w-[50%] h-[50%] rounded-full particle-bg blur-3xl opacity-40"></div>
+
+</div>
+
+<main class="w-full max-w-md z-10 space-y-10 py-12">
+
+<header class="flex flex-col items-center space-y-4">
+
+<div class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full blur opacity-25"></div>
+
+<h1 class="text-5xl font-bold tracking-tighter text-violet-300 relative">
+ACCESS
+</h1>
+
+</div>
+
+<p class="text-zinc-400 text-center px-4">
+Entra en el futuro del alto rendimiento.
+</p>
+
+</header>
+
+<section class="glass-panel rounded-xl p-8 space-y-6">
+
+<form id="loginForm" class="space-y-5" onsubmit="return false;"></form>
+
+<div class="space-y-2">
+
+<label class="text-sm text-zinc-400 block ml-1">
+Correo Electrónico
+</label>
+
+<div class="relative">
+
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
+mail
+</span>
+
+<input
+id="email"
+type="email"
+placeholder="nombre@ejemplo.com"
+class="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-violet-500"
+/>
+
+</div>
+</div>
+
+<div class="space-y-2">
+
+<label class="text-sm text-zinc-400 block ml-1">
+Contraseña
+</label>
+
+<div class="relative">
+
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
+lock
+</span>
+
+<input
+id="password"
+type="password"
+placeholder="••••••••"
+class="w-full bg-zinc-950 border border-zinc-800 rounded-lg py-3.5 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-violet-500"
+/>
+
+</div>
+</div>
+
+<button
+type="button"
+id="loginBtn"
+class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold py-4 rounded-lg neon-glow-primary hover:scale-[1.01] transition-all"
+>
+Iniciar Sesión
+</button>
+
+</form>
+
+<p id="mensaje" class="text-center text-zinc-300"></p>
+
+</section>
+
+</main>
+
+<script>
+
+const button = document.getElementById("loginBtn");
+
+button.addEventListener("click", async () => {
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+
+        const response = await fetch("http://localhost:5000/login", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                email,
+                password
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+
+            window.location.href = "http://localhost:5000/home.html";
+
+        } else {
+
+            document.getElementById("mensaje").innerText =
+                data.error;
+
+        }
+
+    } catch (error) {
+
+        document.getElementById("mensaje").innerText =
+            "Error conectando con el servidor ❌";
+
+    }
+
+});
+
+</script>
+<script>
+
+const button = document.getElementById("loginBtn");
+
+button.addEventListener("click", async () => {
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const response = await fetch("http://localhost:5000/login", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            email,
+            password
+        })
+
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+
+        window.location.href = "http://localhost:5000/home.html";
+
+    } else {
+
+        document.getElementById("mensaje").innerText =
+            data.error;
+
+    }
+
+});
+
+</script>
+<script>
+const form = document.getElementById("registerForm");
+
+form.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombre").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+
+        const response = await fetch("http://localhost:5000/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nombre,
+                email,
+                password
+            })
+        });
+
+        const data = await response.json();
+
+        document.getElementById("mensaje").innerText =
+            data.message || data.error;
+
+    } catch (error) {
+
+        document.getElementById("mensaje").innerText =
+            "Error al conectar con el servidor";
+
+        console.error(error);
+    }
+
+});
+</script>
+
+</body>
+</html>
