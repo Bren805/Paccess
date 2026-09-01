@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+
+<head>
+
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>ACCESS | Productos</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+rel="stylesheet"/>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+rel="stylesheet"/>
+
+<style>
+
+body{
+    background:#131313;
+    color:white;
+    font-family:'Geist',sans-serif;
+}
+
+.glass{
+    background:rgba(26,26,26,0.8);
+    border:1px solid rgba(208,188,255,0.1);
+    backdrop-filter:blur(10px);
+}
+
+</style>
+
+</head>
+
+<body class="overflow-x-hidden pb-24">
+
+<!-- HEADER -->
+
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-5 h-16 bg-black/80 backdrop-blur-xl border-b border-zinc-800">
+
+```
+<div class="flex items-center gap-3">
+
+    <a href="home.html">
+
+        <span class="material-symbols-outlined text-violet-400 text-3xl">
+            arrow_back
+        </span>
+
+    </a>
+
+    <h1 class="text-2xl font-black tracking-tighter text-violet-300">
+        ACCESS
+    </h1>
+
+</div>
+
+<a href="cart.html">
+
+    <span class="material-symbols-outlined text-violet-300 text-3xl">
+        shopping_cart
+    </span>
+
+</a>
+```
+
+</header>
+
+<!-- CONTENIDO -->
+
+<main class="pt-28 px-5 max-w-7xl mx-auto">
+
+```
+<!-- TITULO -->
+
+<section class="mb-8">
+
+    <h2 class="text-4xl font-black tracking-tight text-violet-300">
+        Productos
+    </h2>
+
+    <p class="text-zinc-400 mt-2">
+        Encontrá el producto que estás buscando.
+    </p>
+
+</section>
+
+
+<!-- BUSCADOR -->
+
+<section class="glass rounded-3xl p-5 mb-6">
+
+    <div class="relative">
+
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
+            search
+        </span>
+
+        <input
+            id="buscador"
+            type="text"
+            placeholder="Buscar productos..."
+            class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl py-4 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-violet-500"
+        />
+
+    </div>
+
+</section>
+
+
+<!-- FILTROS -->
+
+<section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+
+    <!-- CATEGORIA -->
+
+    <div class="glass rounded-2xl p-4">
+
+        <label class="block text-sm text-zinc-400 mb-2">
+            Categoría
+        </label>
+
+        <select
+            id="categoria"
+            class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500"
+        >
+
+            <option value="todas">
+                Todas
+            </option>
+
+            <option value="pc">
+                PC
+            </option>
+
+            <option value="notebooks">
+                Notebooks
+            </option>
+
+            <option value="monitores">
+                Monitores
+            </option>
+
+            <option value="perifericos">
+                Periféricos
+            </option>
+
+            <option value="accesorios">
+                Accesorios
+            </option>
+
+            <option value="sillas">
+                Sillas
+            </option>
+
+            <option value="componentes">
+                Componentes
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- ORDENAR -->
+
+    <div class="glass rounded-2xl p-4">
+
+        <label class="block text-sm text-zinc-400 mb-2">
+            Ordenar por precio
+        </label>
+
+        <select
+            id="orden"
+            class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500"
+        >
+
+            <option value="normal">
+                Precio
+            </option>
+
+            <option value="menor">
+                Menor a mayor
+            </option>
+
+            <option value="mayor">
+                Mayor a menor
+            </option>
+
+        </select>
+
+    </div>
+
+</section>
+
+
+<!-- OFERTAS -->
+
+<div class="flex items-center justify-between mb-6">
+
+    <h2
+        id="tituloProductos"
+        class="text-2xl font-bold"
+    >
+        Todos los productos
+    </h2>
+
+    <button
+        id="btnOfertas"
+        class="flex items-center gap-2 text-violet-300 hover:text-violet-200 transition"
+    >
+
+        <span class="material-symbols-outlined">
+            local_fire_department
+        </span>
+
+        Ofertas
+
+    </button>
+
+</div>
+
+
+<!-- PRODUCTOS -->
+
+<section
+    id="productos"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+>
+</section>
+
+
+<!-- SIN PRODUCTOS -->
+
+<div
+    id="sinProductos"
+    class="hidden text-center py-20 text-zinc-500"
+>
+
+    <span class="material-symbols-outlined text-5xl mb-3">
+        search_off
+    </span>
+
+    <p class="text-lg">
+        No encontramos productos.
+    </p>
+
+</div>
+```
+
+</main>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+
+/* FIREBASE */
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyB-joifAiA-sXI4c7j2MDKazz2omKzPD80",
+
+    authDomain: "access-store-8955f.firebaseapp.com",
+
+    projectId: "access-store-8955f",
+
+    storageBucket: "access-store-8955f.firebasestorage.app",
+
+    messagingSenderId: "999710580545",
+
+    appId: "1:999710580545:web:31d37babe33098af464bc0"
+
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+
+/* ELEMENTOS */
+
+const contenedor =
+    document.getElementById("productos");
+
+const sinProductos =
+    document.getElementById("sinProductos");
+
+const buscador =
+    document.getElementById("buscador");
+
+const categoria =
+    document.getElementById("categoria");
+
+const orden =
+    document.getElementById("orden");
+
+const btnOfertas =
+    document.getElementById("btnOfertas");
+
+const tituloProductos =
+    document.getElementById("tituloProductos");
+
+
+/* VARIABLES */
+
+let productos = [];
+
+let mostrandoOfertas = false;
+
+
+/* CARGAR PRODUCTOS */
+
+async function cargarProductos(){
+
+    try{
+
+        const snapshot =
+            await getDocs(
+                collection(db, "productos")
+            );
+
+        productos = [];
+
+        snapshot.forEach((doc) => {
+
+            productos.push({
+
+                id: doc.id,
+
+                ...doc.data()
+
+            });
+
+        });
+
+        mostrarProductos();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        contenedor.innerHTML = `
+
+            <div class="col-span-full text-center text-red-400">
+
+                Error cargando productos ❌
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* MOSTRAR PRODUCTOS */
+
+function mostrarProductos(){
+
+    let resultado =
+        [...productos];
+
+
+    /* BUSCADOR */
+
+    const texto =
+        buscador.value
+            .toLowerCase()
+            .trim();
+
+
+    if(texto){
+
+        resultado =
+            resultado.filter(producto =>
+
+                producto.nombre
+                    ?.toLowerCase()
+                    .includes(texto)
+
+            );
+
+    }
+
+
+    /* CATEGORIA */
+
+    const categoriaSeleccionada =
+        categoria.value;
+
+
+    if(
+        categoriaSeleccionada !== "todas"
+        &&
+        !mostrandoOfertas
+    ){
+
+        resultado =
+            resultado.filter(producto =>
+
+                producto.categoria
+                    ?.toLowerCase()
+                    === categoriaSeleccionada
+
+            );
+
+    }
+
+
+    /* OFERTAS */
+
+    if(mostrandoOfertas){
+
+        resultado =
+            resultado.filter(producto =>
+
+                producto.enOferta === true
+
+            );
+
+    }
+
+
+    /* ORDEN */
+
+    if(orden.value === "menor"){
+
+        resultado.sort(
+            (a,b) =>
+                Number(a.precio) -
+                Number(b.precio)
+        );
+
+    }
+
+    if(orden.value === "mayor"){
+
+        resultado.sort(
+            (a,b) =>
+                Number(b.precio) -
+                Number(a.precio)
+        );
+
+    }
+
+
+    /* LIMPIAR */
+
+    contenedor.innerHTML = "";
+
+
+    /* SIN PRODUCTOS */
+
+    if(resultado.length === 0){
+
+        sinProductos.classList.remove("hidden");
+
+        return;
+
+    }
+
+    sinProductos.classList.add("hidden");
+
+
+    /* TARJETAS */
+
+    resultado.forEach(producto => {
+
+        const enOferta =
+            producto.enOferta === true;
+
+        const precioOriginal =
+            Number(producto.precio);
+
+        const precioFinal =
+            enOferta &&
+            producto.precioOferta
+                ? Number(producto.precioOferta)
+                : precioOriginal;
+
+
+        let descuento = 0;
+
+        if(enOferta && precioFinal < precioOriginal){
+
+            descuento =
+                Math.round(
+                    (
+                        1 -
+                        precioFinal /
+                        precioOriginal
+                    ) * 100
+                );
+
+        }
+
+
+        contenedor.innerHTML += `
+
+        <article class="glass rounded-3xl overflow-hidden hover:-translate-y-1 transition duration-300">
+
+            <div class="relative">
+
+                <img
+                    src="${producto.imagen}"
+                    class="w-full h-52 object-cover"
+                />
+
+                ${
+                    enOferta
+                    ?
+                    `
+                    <span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+
+                        🔥 ${descuento}% OFF
+
+                    </span>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+
+            <div class="p-5">
+
+                <p class="text-zinc-500 text-sm">
+
+                    ${producto.categoria || ""}
+
+                </p>
+
+
+                <h3 class="text-xl font-bold mt-1">
+
+                    ${producto.nombre}
+
+                </h3>
+
+
+                <div class="mt-4">
+
+                    ${
+                        enOferta
+                        ?
+                        `
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-zinc-500 line-through">
+
+                                $${precioOriginal}
+
+                            </span>
+
+                            <span class="text-violet-300 font-black text-2xl">
+
+                                $${precioFinal}
+
+                            </span>
+
+                        </div>
+                        `
+                        :
+                        `
+                        <span class="text-violet-300 font-black text-2xl">
+
+                            $${precioOriginal}
+
+                        </span>
+                        `
+                    }
+
+                </div>
+
+
+                <button
+                    onclick="agregarCarrito('${producto.id}', '${producto.nombre}', ${precioFinal})"
+                    class="w-full mt-5 bg-violet-500 hover:bg-violet-600 transition py-3 rounded-xl font-bold flex items-center justify-center gap-2"
+                >
+
+                    <span class="material-symbols-outlined">
+                        shopping_cart
+                    </span>
+
+                    Agregar al carrito
+
+                </button>
+
+            </div>
+
+        </article>
+
+        `;
+
+    });
+
+}
+
+
+/* CARRITO */
+
+window.agregarCarrito = async function(productoId, nombre, precio){
+
+    const usuarioGuardado =
+        localStorage.getItem("usuario");
+
+
+    // Si no inició sesión
+
+    if(!usuarioGuardado){
+
+        const quiereIngresar =
+            confirm(
+                "Para usar el carrito tenés que iniciar sesión.\n\n¿Querés iniciar sesión?"
+            );
+
+
+        if(quiereIngresar){
+
+            window.location.href = "login.html";
+
+        }
+
+        return;
+
+    }
+
+
+    const usuario =
+        JSON.parse(usuarioGuardado);
+
+
+    try{
+
+        const response =
+            await fetch("/carrito", {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    usuario_id: usuario.id,
+
+                    producto_id: productoId,
+
+                    nombre: nombre,
+
+                    precio: precio
+
+                })
+
+            });
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            alert(
+                data.error ||
+                "Error agregando el producto al carrito"
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            nombre +
+            " agregado al carrito 🛒"
+        );
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Error conectando con el servidor ❌"
+        );
+
+    }
+
+};
+
+/* INICIAR */
+
+cargarProductos();
+
+</script>
+
+</body>
+</html>

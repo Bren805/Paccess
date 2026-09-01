@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+
+<head> <meta charset="utf-8"/> <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+<title>ACCESS | Mi cuenta</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/> <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet"/>
+
+<style> body{ background:#131313; color:white; font-family:'Geist',sans-serif; } .glass{ background:rgba(26,26,26,0.8); border:1px solid rgba(208,188,255,0.1); backdrop-filter:blur(10px); } .input{ background:#1b1b1b; border:1px solid #303030; color:white; } .input:focus{ outline:none; border-color:#8b5cf6; } .input::placeholder{ color:#71717a; } select.input option{ background:#1b1b1b; color:white; } </style>
+
+</head>
+
+<body class="min-h-screen pb-20">
+
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-5 h-16 bg-black/80 backdrop-blur-xl border-b border-zinc-800">
+
+<div class="flex items-center gap-3">
+
+    <a
+        href="home.html"
+        class="text-violet-300 hover:text-violet-200 transition"
+    >
+        <span class="material-symbols-outlined text-3xl">
+            arrow_back
+        </span>
+    </a>
+
+    <h1 class="text-2xl font-black tracking-tighter text-violet-300">
+        ACCESS
+    </h1>
+
+</div>
+
+<span class="material-symbols-outlined text-violet-300 text-3xl">
+    account_circle
+</span>
+
+</header>
+
+<main class="max-w-4xl mx-auto px-5 pt-28">
+
+<div class="mb-10">
+
+    <p class="text-violet-300 text-sm font-bold uppercase tracking-widest">
+        Cuenta
+    </p>
+
+    <h2 class="text-4xl font-black tracking-tight mt-2">
+        Mi cuenta
+    </h2>
+
+    <p class="text-zinc-400 mt-2">
+        Administrá tus datos personales, dirección y método de pago.
+    </p>
+
+</div>
+
+<section class="glass rounded-3xl p-6 md:p-8 mb-6">
+
+    <div class="flex items-center gap-3 mb-7">
+
+        <span class="material-symbols-outlined text-violet-300 text-3xl">
+            person
+        </span>
+
+        <div>
+
+            <h3 class="text-2xl font-bold">
+                Datos personales
+            </h3>
+
+            <p class="text-zinc-500 text-sm">
+                Información básica de tu cuenta
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Nombre
+            </label>
+
+            <input
+                id="nombre"
+                type="text"
+                class="input w-full rounded-xl px-4 py-3"
+                placeholder="Tu nombre"
+            />
+
+        </div>
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Email
+            </label>
+
+            <input
+                id="email"
+                type="email"
+                class="input w-full rounded-xl px-4 py-3"
+                placeholder="tu@email.com"
+                readonly
+            />
+
+        </div>
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Teléfono
+            </label>
+
+            <input
+                id="telefono"
+                type="tel"
+                class="input w-full rounded-xl px-4 py-3"
+                placeholder="Tu teléfono"
+            />
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="glass rounded-3xl p-6 md:p-8 mb-6">
+
+    <div class="flex items-center gap-3 mb-7">
+
+        <span class="material-symbols-outlined text-violet-300 text-3xl">
+            location_on
+        </span>
+
+        <div>
+
+            <h3 class="text-2xl font-bold">
+                Dirección de envío
+            </h3>
+
+            <p class="text-zinc-500 text-sm">
+                Dirección donde recibirás tus pedidos
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <div class="md:col-span-2">
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Dirección
+            </label>
+
+            <input
+                id="direccion"
+                type="text"
+                class="input w-full rounded-xl px-4 py-3"
+                placeholder="Calle y número"
+            />
+
+        </div>
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Ciudad
+            </label>
+
+            <input
+                id="ciudad"
+                type="text"
+                class="input w-full rounded-xl px-4 py-3"
+                placeholder="Ciudad"
+            />
+
+        </div>
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Provincia
+            </label>
+
+            <input
+                id="provincia"
+                type="text"
+                class="input w-full rounded-xl px-4 py-3"
+                placeholder="Provincia"
+            />
+
+        </div>
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Código postal
+            </label>
+
+            <input
+                id="codigo_postal"
+                type="text"
+                class="input w-full rounded-xl px-4 py-3"
+                placeholder="Código postal"
+            />
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="glass rounded-3xl p-6 md:p-8 mb-6">
+
+    <div class="flex items-center gap-3 mb-7">
+
+        <span class="material-symbols-outlined text-violet-300 text-3xl">
+            credit_card
+        </span>
+
+        <div>
+
+            <h3 class="text-2xl font-bold">
+                Método de pago
+            </h3>
+
+            <p class="text-zinc-500 text-sm">
+                Datos utilizados para tus compras
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Tipo de tarjeta
+            </label>
+
+            <select
+                id="tipo"
+                class="input w-full rounded-xl px-4 py-3"
+            >
+
+                <option value="">
+                    Seleccionar
+                </option>
+
+                <option value="Visa">
+                    Visa
+                </option>
+
+                <option value="Mastercard">
+                    Mastercard
+                </option>
+
+                <option value="American Express">
+                    American Express
+                </option>
+
+            </select>
+
+        </div>
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Titular
+            </label>
+
+            <input
+                id="titular"
+                type="text"
+                class="input w-full rounded-xl px-4 py-3"
+                placeholder="Nombre del titular"
+            />
+
+        </div>
+
+        <div class="md:col-span-2">
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Número de tarjeta
+            </label>
+
+            <input
+                id="numero_tarjeta"
+                type="text"
+                class="input w-full rounded-xl px-4 py-3"
+                inputmode="numeric"
+                autocomplete="cc-number"
+                maxlength="19"
+                placeholder="1234 5678 9012 3456"
+            />
+
+        </div>
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                Vencimiento
+            </label>
+
+            <input
+                id="vencimiento"
+                type="text"
+                class="input w-full rounded-xl px-4 py-3"
+                inputmode="numeric"
+                autocomplete="cc-exp"
+                maxlength="5"
+                placeholder="MM/AA"
+            />
+
+        </div>
+
+        <div>
+
+            <label class="block text-sm text-zinc-400 mb-2">
+                CVV
+            </label>
+
+            <input
+                id="cvv"
+                type="password"
+                class="input w-full rounded-xl px-4 py-3"
+                inputmode="numeric"
+                autocomplete="cc-csc"
+                maxlength="4"
+                placeholder="123"
+            />
+
+        </div>
+
+    </div>
+
+</section>
+
+<div class="flex justify-end">
+
+    <button
+        id="guardar"
+        class="bg-violet-500 hover:bg-violet-600 transition px-8 py-3 rounded-full font-bold flex items-center gap-2"
+    >
+
+        <span class="material-symbols-outlined">
+            save
+        </span>
+
+        Guardar cambios
+
+    </button>
+
+</div>
+
+</main>
+
+<script> const usuarioGuardado = localStorage.getItem("usuario"); if(!usuarioGuardado){ window.location.href = "login.html"; } let usuario = null; if(usuarioGuardado){ usuario = JSON.parse(usuarioGuardado); document.getElementById("nombre").value = usuario.nombre || ""; document.getElementById("email").value = usuario.email || ""; } const numeroTarjeta = document.getElementById("numero_tarjeta"); const vencimiento = document.getElementById("vencimiento"); const cvv = document.getElementById("cvv"); numeroTarjeta.addEventListener("input", function(){ let numeros = this.value.replace(/\D/g, ""); numeros = numeros.substring(0, 16); let grupos = numeros.match(/.{1,4}/g); this.value = grupos ? grupos.join(" ") : ""; }); vencimiento.addEventListener("input", function(){ let numeros = this.value.replace(/\D/g, ""); numeros = numeros.substring(0, 4); if(numeros.length > 2){ this.value = numeros.substring(0, 2) + "/" + numeros.substring(2); } else{ this.value = numeros; } }); cvv.addEventListener("input", function(){ this.value = this.value .replace(/\D/g, "") .substring(0, 4); }); document.getElementById("guardar") .addEventListener("click", async function(){ if(!usuario){ window.location.href = "login.html"; return; } const tarjeta = numeroTarjeta.value.replace(/\s/g, ""); const datos = { usuario_id: usuario.id, telefono: document.getElementById("telefono").value, direccion: document.getElementById("direccion").value, ciudad: document.getElementById("ciudad").value, provincia: document.getElementById("provincia").value, codigo_postal: document.getElementById("codigo_postal").value, tipo: document.getElementById("tipo").value, titular: document.getElementById("titular").value, numero_tarjeta: tarjeta, vencimiento: vencimiento.value, cvv: cvv.value }; try{ const respuesta = await fetch("/cuenta", { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(datos) }); const resultado = await respuesta.json(); if(respuesta.ok){ alert("Datos guardados correctamente"); } else{ alert( resultado.error || "Error guardando los datos" ); } } catch(error){ console.log(error); alert("No se pudo conectar con el servidor"); } }); </script>
+
+</body> </html>

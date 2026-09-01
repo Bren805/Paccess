@@ -120,6 +120,12 @@ class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bo
 >
 Iniciar Sesión
 </button>
+<p class="text-center text-zinc-400 mt-4">
+    ¿No tenés una cuenta?
+    <a href="/register.html" class="text-violet-300 hover:text-violet-200 font-bold">
+        Registrate
+    </a>
+</p>
 
 </form>
 
@@ -140,7 +146,7 @@ button.addEventListener("click", async () => {
 
     try {
 
-        const response = await fetch("http://localhost:5000/login", {
+        const response = await fetch("/login", {
 
             method: "POST",
 
@@ -159,9 +165,13 @@ button.addEventListener("click", async () => {
 
         if (response.ok) {
 
-            window.location.href = "http://localhost:5000/home.html";
+    localStorage.setItem(
+        "usuario",
+        JSON.stringify(data.usuario)
+    );
 
-        } else {
+    window.location.href = "/home.html";
+}else {
 
             document.getElementById("mensaje").innerText =
                 data.error;
@@ -178,86 +188,7 @@ button.addEventListener("click", async () => {
 });
 
 </script>
-<script>
 
-const button = document.getElementById("loginBtn");
-
-button.addEventListener("click", async () => {
-
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    const response = await fetch("http://localhost:5000/login", {
-
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-            email,
-            password
-        })
-
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-
-        window.location.href = "http://localhost:5000/home.html";
-
-    } else {
-
-        document.getElementById("mensaje").innerText =
-            data.error;
-
-    }
-
-});
-
-</script>
-<script>
-const form = document.getElementById("registerForm");
-
-form.addEventListener("submit", async (e) => {
-
-    e.preventDefault();
-
-    const nombre = document.getElementById("nombre").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    try {
-
-        const response = await fetch("http://localhost:5000/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                nombre,
-                email,
-                password
-            })
-        });
-
-        const data = await response.json();
-
-        document.getElementById("mensaje").innerText =
-            data.message || data.error;
-
-    } catch (error) {
-
-        document.getElementById("mensaje").innerText =
-            "Error al conectar con el servidor";
-
-        console.error(error);
-    }
-
-});
-</script>
 
 </body>
 </html>

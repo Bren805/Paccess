@@ -38,9 +38,15 @@ body{
 
 <div class="flex items-center gap-3">
 
-<span class="material-symbols-outlined text-violet-400">
-menu
-</span>
+<button
+    id="menuBtn"
+    class="text-violet-400 hover:text-violet-300 transition"
+    aria-label="Abrir menú"
+>
+    <span class="material-symbols-outlined text-3xl">
+        menu
+    </span>
+</button>
 
 <h1 class="text-2xl font-black tracking-tighter text-violet-300">
 ACCESS
@@ -50,21 +56,125 @@ ACCESS
 
 <div class="flex items-center gap-5">
 
-<span class="material-symbols-outlined text-zinc-300">
-search
-</span>
+    <span class="material-symbols-outlined text-zinc-300">
+        search
+    </span>
 
-<a href="cart.html">
 
-<span class="material-symbols-outlined text-violet-300 text-3xl">
-shopping_cart
-</span>
+    <!-- CUENTA -->
 
-</a>
+    <div class="relative">
+
+        <button
+            id="cuentaBtn"
+            class="text-violet-300 hover:text-violet-200 transition"
+            aria-label="Cuenta"
+        >
+
+            <span class="material-symbols-outlined text-3xl">
+                account_circle
+            </span>
+
+        </button>
+
+
+        <!-- MENÚ DE CUENTA -->
+
+        <div
+            id="cuentaMenu"
+            class="hidden absolute right-0 mt-3 w-56 glass rounded-2xl p-3 shadow-2xl"
+        >
+
+            <!-- SIN SESIÓN -->
+
+            <div id="sinSesion">
+
+                <a
+                    href="login.html"
+                    class="block px-4 py-3 rounded-xl text-zinc-300 hover:bg-violet-500/10 hover:text-violet-300 transition"
+                >
+                    Iniciar sesión
+                </a>
+
+                <a
+                    href="register.html"
+                    class="block px-4 py-3 rounded-xl text-zinc-300 hover:bg-violet-500/10 hover:text-violet-300 transition"
+                >
+                    Registrarse
+                </a>
+
+            </div>
+
+
+            <!-- CON SESIÓN -->
+
+<div id="conSesion" class="hidden">
+
+    <a
+        href="cuenta.html"
+        class="block px-4 py-3 rounded-xl text-zinc-300 hover:bg-violet-500/10 hover:text-violet-300 transition"
+    >
+        Mi cuenta
+    </a>
+
+    <button
+        id="cerrarSesion"
+        class="w-full text-left px-4 py-3 rounded-xl text-zinc-300 hover:bg-red-500/10 hover:text-red-400 transition"
+    >
+        Cerrar sesión
+    </button>
 
 </div>
 
+    <!-- CARRITO -->
+
+    <button
+    id="carritoBtn"
+    class="text-violet-300 hover:text-violet-200 transition"
+    aria-label="Carrito"
+>
+
+    <span class="material-symbols-outlined text-3xl">
+        shopping_cart
+    </span>
+
+</button>
+</div>
+
 </header>
+<!-- MENÚ DESPLEGABLE -->
+
+<div
+    id="menu"
+    class="fixed top-16 left-0 w-72 bg-[#131313]/95 backdrop-blur-xl border-r border-b border-zinc-800 z-40 transform -translate-x-full transition-transform duration-300"
+>
+
+    <nav class="p-6 space-y-3">
+
+        <a
+            href="home.html"
+            class="block px-4 py-3 rounded-xl text-zinc-300 hover:bg-violet-500/10 hover:text-violet-300 transition"
+        >
+            Inicio
+        </a>
+
+        <a
+            href="productos.html"
+            class="block px-4 py-3 rounded-xl text-zinc-300 hover:bg-violet-500/10 hover:text-violet-300 transition"
+        >
+            Productos
+        </a>
+
+        <a
+            href="cart.html"
+            class="block px-4 py-3 rounded-xl text-zinc-300 hover:bg-violet-500/10 hover:text-violet-300 transition"
+        >
+            Carrito
+        </a>
+
+    </nav>
+
+</div>
 
 <!-- HERO -->
 
@@ -246,6 +356,116 @@ async function cargarProductos() {
 
 cargarProductos();
 
+</script>
+<script>
+
+const menuBtn = document.getElementById("menuBtn");
+const menu = document.getElementById("menu");
+
+menuBtn.addEventListener("click", () => {
+
+    menu.classList.toggle("-translate-x-full");
+    menu.classList.toggle("translate-x-0");
+
+});
+const cuentaBtn =
+    document.getElementById("cuentaBtn");
+
+const cuentaMenu =
+    document.getElementById("cuentaMenu");
+
+const sinSesion =
+    document.getElementById("sinSesion");
+
+const conSesion =
+    document.getElementById("conSesion");
+
+const cerrarSesion =
+    document.getElementById("cerrarSesion");
+
+
+// Abrir / cerrar menú
+
+cuentaBtn.addEventListener("click", (event) => {
+
+    event.stopPropagation();
+
+    cuentaMenu.classList.toggle("hidden");
+
+});
+
+
+// Cerrar menú al hacer clic afuera
+
+document.addEventListener("click", () => {
+
+    cuentaMenu.classList.add("hidden");
+
+});
+
+
+// Evitar que el menú se cierre al tocarlo
+
+cuentaMenu.addEventListener("click", (event) => {
+
+    event.stopPropagation();
+
+});
+
+
+// Comprobar sesión
+
+const usuarioGuardado =
+    localStorage.getItem("usuario");
+
+
+if(usuarioGuardado){
+
+    sinSesion.classList.add("hidden");
+
+    conSesion.classList.remove("hidden");
+
+}
+else{
+
+    sinSesion.classList.remove("hidden");
+
+    conSesion.classList.add("hidden");
+
+}
+
+
+// Cerrar sesión
+
+cerrarSesion.addEventListener("click", () => {
+
+    localStorage.removeItem("usuario");
+
+    window.location.href = "home.html";
+
+});
+const carritoBtn =
+    document.getElementById("carritoBtn");
+
+
+carritoBtn.addEventListener("click", () => {
+
+    const usuarioGuardado =
+        localStorage.getItem("usuario");
+
+
+    if(usuarioGuardado){
+
+        window.location.href = "cart.html";
+
+    }
+    else{
+
+        window.location.href = "login.html";
+
+    }
+
+});
 </script>
 
 </body>

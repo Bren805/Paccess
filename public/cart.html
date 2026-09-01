@@ -88,8 +88,8 @@ Vaciar Carrito
 
 <script>
 
-let carrito =
-    JSON.parse(localStorage.getItem("carrito")) || [];
+
+let carrito = [];
 
 const container =
     document.getElementById("carrito-container");
@@ -97,15 +97,135 @@ const container =
 const total =
     document.getElementById("total");
 
+
+// =========================
+// COMPROBAR USUARIO
+// =========================
+
+const usuarioGuardado =
+    localStorage.getItem("usuario");
+
+
+if(!usuarioGuardado){
+
+    window.location.href = "login.html";
+
+}
+
+
+const usuario =
+    JSON.parse(usuarioGuardado);
+
+
+// =========================
+// CARGAR CARRITO
+// =========================
+
+async function cargarCarrito(){
+
+    try{
+
+        const response =
+            await fetch(
+                `/carrito/${usuario.id}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            console.error(data);
+
+            alert(
+                data.error ||
+                "Error cargando el carrito"
+            );
+
+            return;
+
+        }
+
+
+        carrito = data;
+
+        renderCarrito();
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+
+            <div class="text-center text-red-400 py-10">
+
+                Error conectando con el servidor ❌
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// =========================
+// MOSTRAR CARRITO
+// =========================
+
 function renderCarrito(){
 
     container.innerHTML = "";
 
     let totalFinal = 0;
 
-    carrito.forEach((producto, index) => {
 
-        totalFinal += Number(producto.precio);
+    if(carrito.length === 0){
+
+        container.innerHTML = `
+
+            <div class="text-center py-20 text-zinc-500">
+
+                <span class="material-symbols-outlined text-6xl mb-4">
+
+                    shopping_cart
+
+                </span>
+
+                <p class="text-xl">
+
+                    Tu carrito está vacío.
+
+                </p>
+
+            </div>
+
+        `;
+
+        total.innerText = "$0";
+
+        return;
+
+    }
+
+
+    carrito.forEach((producto) => {
+
+        const precio =
+            Number(producto.precio);
+
+        const cantidad =
+            Number(producto.cantidad);
+
+
+        totalFinal +=
+            precio * cantidad;
+
 
         container.innerHTML += `
 
@@ -114,19 +234,35 @@ function renderCarrito(){
             <div>
 
                 <h2 class="text-xl font-bold">
+
                     ${producto.nombre}
+
                 </h2>
 
+
                 <p class="text-violet-300 font-bold text-lg mt-1">
-                    $${producto.precio}
+
+                    $${precio}
+
+                </p>
+
+
+                <p class="text-zinc-400 text-sm mt-1">
+
+                    Cantidad: ${cantidad}
+
                 </p>
 
             </div>
 
+
             <button
-            onclick="eliminarProducto(${index})"
-            class="material-symbols-outlined bg-red-500 hover:bg-red-600 transition p-3 rounded-full">
-            delete
+                onclick="eliminarProducto(${producto.id})"
+                class="material-symbols-outlined bg-red-500 hover:bg-red-600 transition p-3 rounded-full"
+            >
+
+                delete
+
             </button>
 
         </div>
@@ -135,35 +271,134 @@ function renderCarrito(){
 
     });
 
-    total.innerText = "$" + totalFinal;
+
+    total.innerText =
+        "$" + totalFinal;
 
 }
 
-function eliminarProducto(index){
 
-    carrito.splice(index, 1);
+// =========================
+// ELIMINAR PRODUCTO
+// =========================
 
-    localStorage.setItem(
-        "carrito",
-        JSON.stringify(carrito)
-    );
+window.eliminarProducto =
+async function(id){
 
-    renderCarrito();
+    try{
 
-}
+        const response =
+            await fetch(
+                `/carrito/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
 
-function vaciarCarrito(){
 
-    localStorage.removeItem("carrito");
+        const data =
+            await response.json();
 
-    carrito = [];
 
-    renderCarrito();
+        if(!response.ok){
 
-}
+            alert(
+                data.error ||
+                "Error eliminando producto"
+            );
 
-renderCarrito();
+            return;
 
+        }
+
+
+        cargarCarrito();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Error conectando con el servidor ❌"
+        );
+
+    }
+
+};
+
+
+// =========================
+// VACIAR CARRITO
+// =========================
+
+window.vaciarCarrito =
+async function(){
+
+    const confirmar =
+        confirm(
+            "¿Querés vaciar el carrito?"
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `/carrito/usuario/${usuario.id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            alert(
+                data.error ||
+                "Error vaciando el carrito"
+            );
+
+            return;
+
+        }
+
+
+        carrito = [];
+
+        renderCarrito();
+
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "Error conectando con el servidor ❌"
+        );
+
+    }
+
+};
+
+
+// =========================
+// INICIAR
+// =========================
+
+cargarCarrito();
 </script>
 
 </body>
